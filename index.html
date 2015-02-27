@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+<TITLE></TITLE>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width'>
+<link rel='stylesheet' type='text/css' href='style.css' />
+<script type='text/javascript' src='scripts/jquery.js'></script> 
+<script type='text/javascript' src='scripts/js_master.js'></script>
+</HEAD>
+<BODY onload="javascript:initPaintApp();">
+	<div id='header'>
+		<div id='boardControlsTop'>Top Board Controls</div>
+		<div id='attendeeControls'>Attendee Controls</div>
+	</div>
+	<canvas id='whiteBoard'>
+		Main WhiteBoard
+	</canvas>
+	<div id='boardControlsLeft'>
+		<label for='lineThickness'></label>
+		<input type='text' id='lineThickness' name = 'lineThickness' value='1' />
+		<label for='eraser'></label>
+		<input type='buttom' id='eraser' name='eraser' />
+	</div>
+	<div id='videoBox'>Box for the videos</div>
+	<div id='attendeeList'>List of the attendees</div>
+	<div id='chatBox'>Box for all the chats</div>
+	<textarea id='chatInput'>Enter here to chat</textarea>
+	<div id='footer'></div>
+</BODY>
+</HTML>
