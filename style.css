@@ -1,0 +1,145 @@
+html, body
+{
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+#header
+{
+	position: fixed;
+	top: 0.5%;
+	left: 0.5%;
+	width: 99%;
+	height: 3.75%;
+	overflow-y: none;
+	overflow-x: auto;
+}
+
+#whiteBoard
+{
+	position: fixed;
+	top: 5%;
+	left: 3.5%;
+	display: block;
+	width: 72%;
+	height: 90%;
+	border: solid thin black;
+	overflow: auto;
+	margin:0;
+}
+
+#attendeeControls
+{
+	position: fixed;
+	top: 0.5%;
+	left: 76%;
+	width: 23.5%;
+	height: 3.75%;
+	border: solid thin gray;
+	overflow-y: none;
+	overflow-x: auto;
+}
+
+#videoBox
+{
+	position: fixed;
+	top: 5%;
+	left: 76%;
+	display: block;
+	width: 23.5%;
+	height: 25%;
+	border: solid thin black;
+	overflow: none;
+}
+
+#attendeeList
+{
+	position: fixed;
+	top: 31%;
+	left: 76%;
+	display: block;
+	width: 23.5%;
+	height: 15%;
+	border: solid thin black;
+	overflow-x: none;
+	overflow-y: auto;
+}
+
+#chatBox
+{
+	position: fixed;
+	top: 47%;
+	left: 76%;
+	display: block;
+	width: 23.5%;
+	height: 48%;
+	border: solid thin black;
+	overflow-x: none;
+	overflow-y: auto;
+}
+
+#chatInput
+{
+	position: fixed;
+	top: 88%;
+	left: 76%;
+	display: block;
+	width: 23.5%;
+	height: 7%;
+	border: solid thin gray;
+	padding: 0;
+}
+
+#footer
+{
+}
+
+/*
+ * Styles for the Board Controls on the left of the board
+*/
+#boardControlsLeft
+{
+	position: fixed;
+	top: 5%;
+	left: 0.5%;
+	width: 2.5%;
+	height: 90%;
+	border: solid thin gray;
+	overflow-x: hidden;
+	overflow-y: auto;
+	text-align: center;
+}
+
+label[for='lineThickness']{
+	margin:0;
+	padding:0;
+	width: 100%;
+	height:auto;
+	background-image:url("");
+}
+
+#lineThickness{
+	font-size: 12px;
+	width: 2.5em;
+	padding:0.25em 0;
+	text-align:center;
+	margin:0.1em 0 0.1em 0;
+	border:solid thin #000;
+}
+
+/*
+ * Styles for the Board Controls on the top of the board
+*/
+#boardControlsTop
+{
+	position: fixed;
+	top: 0.5%;
+	left: 0.5%;
+	width: 75%;
+	height: 3.75%;
+	border: solid thin gray;
+	overflow-y: hidden;
+	overflow-x: auto;
+}
