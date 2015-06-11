@@ -1,0 +1,230 @@
+html, body
+{
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+#header
+{
+	position: fixed;
+	top: 0.5%;
+	left: 0.5%;
+	width: 99%;
+	height: 3.75%;
+	overflow-y: none;
+	overflow-x: auto;
+}
+
+#whiteBoard
+{
+	position: fixed;
+	top: 5%;
+	left: 3.5%;
+	display: block;
+	width: 72%;
+	height: 90%;
+	border: solid thin black;
+	overflow: auto;
+	margin:0;
+	cursor: url('../Images/brush.png'),crosshair;
+}
+
+#attendeeControls
+{
+	position: fixed;
+	top: 0.5%;
+	left: 76%;
+	width: 23.5%;
+	height: 3.75%;
+	border: solid thin gray;
+	overflow-y: none;
+	overflow-x: auto;
+}
+
+#prev, #next, #stopVid{float: right;cursor:pointer}
+
+#videoBox
+{
+	position: fixed;
+	top: 5%;
+	left: 76%;
+	display: block;
+	width: 23.5%;
+	height: 25%;
+	border: solid thin black;
+	overflow: none;
+	z-index: 1;
+}
+
+canvas#videoSelf
+{
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+canvas#videoOthers
+{
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+
+#attendeeList
+{
+	position: fixed;
+	top: 31%;
+	left: 76%;
+	display: block;
+	width: 23.5%;
+	height: 15%;
+	border: solid thin black;
+	overflow-x: none;
+	overflow-y: auto;
+}
+
+#chatZone
+{
+	position:relative;
+	top:47%;
+	left:76%;
+	width:23.5%;
+	height:48%;
+}
+
+#chatBox
+{
+	display: block;
+	width: 100%;
+	height: 83.5%;
+	border: solid thin black;
+	overflow-x: none;
+	overflow-y: auto;
+}
+
+.flex
+{
+	display: flex;
+	flex:horizontal;
+}
+
+.flex p
+{
+	text-align: right;
+}
+
+.flex p:first
+{
+	text-align:left;
+}
+
+#chat
+{
+	width:100%;
+	height:15%;
+	margin-top: 1.5%;
+	margin-left: 1%;
+}
+
+#chatInput
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: solid thin gray;
+	padding: 0;
+	float: right;
+}
+
+/*
+ * Styles for the Board Controls on the left of the board
+*/
+#boardControlsLeft
+{
+	position: fixed;
+	top: 5%;
+	left: 0.5%;
+	width: 2.5%;
+	height: 90%;
+	border: solid thin gray;
+	overflow-x: hidden;
+	overflow-y: auto;
+	text-align: center;
+}
+
+label[for='lineThickness']{
+	margin:0;
+	padding:0;
+	width: 100%;
+	height:auto;
+	background-image:url("");
+}
+
+#lineThickness{
+	font-size: 12px;
+	width: 2.5em;
+	padding:0.25em 0;
+	text-align:center;
+	margin:0.1em 0 0.1em 0;
+	border:solid thin #000;
+}
+
+label[for='eraserThickness']{
+	margin:0;
+	padding:0;
+	width: 100%;
+	height:auto;
+	background-image:url("");
+}
+
+#eraserThickness{
+	font-size: 12px;
+	width: 2.5em;
+	padding:0.25em 0;
+	text-align:center;
+	margin:0.1em 0 0.1em 0;
+	border:solid thin #000;
+}
+
+button{
+	width: 100%;
+}
+
+/*
+ * Styles for the Board Controls on the top of the board
+*/
+#boardControlsTop
+{
+	position: fixed;
+	top: 0.5%;
+	left: 0.5%;
+	width: 75%;
+	height: 3.75%;
+	border: solid thin gray;
+	overflow-y: hidden;
+	overflow-x: auto;
+}
+
+#cover
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 100;
+	width:100%;
+	height:100%;
+	background: #000;
+	text-align: center;
+	vertical-align:middle;
+	display:none;
+}
+#cover input{
+	float:left;
+}
+#cover:before
+{
+	content:"Loading";
+}
