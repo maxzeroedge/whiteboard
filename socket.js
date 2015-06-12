@@ -1,4 +1,4 @@
-var server = require('http').createServer().listen(1337, function(){console.log('Socket Server on 1337..');});
+var server = require('http').createServer().listen(5000, function(){console.log('Socket Server on 5000..');});
 //require('http').createServer(require('express')());//app.createServer().listen();
 var io = require('socket.io').listen(server);
 var debug = require('debug');

@@ -246,7 +246,7 @@ $(document).ready(function(){
 });
 
 function io_connect(){
-	socket = io('https://wbmze.herokuapp.com:1337');
+	socket = io('https://wbmze.herokuapp.com:5000');
 	socket.on('connection', function(data){
 		//Something
 	});
