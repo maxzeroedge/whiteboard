@@ -28,7 +28,7 @@ html, body
 	border: solid thin black;
 	overflow: auto;
 	margin:0;
-	cursor: url('../Images/brush.png'),crosshair;
+	cursor: url('../images/brush.png'),crosshair;
 }
 
 #attendeeControls
@@ -86,6 +86,13 @@ canvas#videoOthers
 	overflow-y: auto;
 }
 
+#attendeeList p
+{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
 #chatZone
 {
 	position:relative;
@@ -126,17 +133,26 @@ canvas#videoOthers
 	width:100%;
 	height:15%;
 	margin-top: 1.5%;
-	margin-left: 1%;
+	border: solid thin gray;
+	display: flex;
 }
 
-#chatInput
+#chat textarea
 {
-	display: block;
-	width: 100%;
+	flex-grow: 20;
 	height: 100%;
-	border: solid thin gray;
+	border: none;
 	padding: 0;
-	float: right;
+	float: left;
+	resize: none;
+}
+#chat input[type='button']
+{
+	height:100%;
+	background: #DBDBDB;
+	border: none;
+	color: #696969;
+	flex-grow: 1;
 }
 
 /*
@@ -219,7 +235,6 @@ button{
 	background: #000;
 	text-align: center;
 	vertical-align:middle;
-	display:none;
 }
 #cover input{
 	float:left;
@@ -227,4 +242,14 @@ button{
 #cover:before
 {
 	content:"Loading";
+}
+
+.flex-equal
+{
+	display: flex;
+}
+
+.flex-equal *
+{
+	flex-grow: 1;
 }

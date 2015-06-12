@@ -125,7 +125,7 @@ function showTrail(e, cnvs, ctx){
 }
 
 function eraser(e, cnvs, ctx){
-	document.getElementById("whiteBoard").style.cursor = "url('../Images/eraser.png'), auto";
+	document.getElementById("whiteBoard").style.cursor = "url('../images/eraser.png'), auto";
 	ctx.globalCompositeOperation="source-over";
 	if(startMotion === 1){
 		endX = e.screenX - cnvs.offsetLeft; endY = fixPageXY(e).y - cnvs.offsetTop;
@@ -236,57 +236,30 @@ $(document).ready(function(){
 		document.getElementById("videoOthers").style.top = 0;
 	});
 	$("#chat input[type='button']").on("click", function(){
-		if($("#chat input[type='text']").val() != ""){
-			socket.emit('chat-data', {"user":user, "time":new Date().getTime(), "data":$("#chat input[type='text']").val()});
-			$("#chat input[type='text']").val("");
+		if($("#chat textarea").val() != ""){
+			var data = {"user":user, "time":new Date().getTime(), "data":$("#chat textarea").val()};
+			socket.emit('chat-data', data);
+			addChat(data);
+			$("#chat textarea").val("");
 		}
 	});
 });
 
-function connect() {
-	ws = new WebSocket("ws://localhost");
-    ws.onopen = function () {
-        console.log("About to send data");
-        ws.send({'event':'user-connect', 'data':name}); // I WANT TO SEND THIS MESSAGE TO THE SERVER!!!!!!!!
-        console.log("Message sent!");
-    };
-
-	parseMessage();
-	
-    ws.onclose = function () {
-        // websocket is closed.
-        console.log("Connection is closed...");
-    };
-};
-
-function parseMessage(){
-	ws.onmessage = function (evt) {
-        var rc_data = evt.data;
-		switch(rc_data.event){
-			case 'wb-data':
-				boardData.push(rc_data.data);
-				break;
-			case 'chat-data':
-				addChat(rc_data.data);
-				break;
-			case 'video-data':
-				displayVideo(rc_data.data);
-				break;
-			case 'user-connect':
-				//User connected
-				break;
-			case 'user-disconnect':
-				//User disconnected
-				break;
-		}
-        console.log("Message received ");
-    };
-}
-
 function io_connect(){
-	socket = io('http://localhost:1337');
+	socket = io('http://wbmze.herokuapp.com:1337');
 	socket.on('connection', function(data){
 		//Something
+	});
+	//Populate User List
+	socket.on('init-load', function(data){
+		for(var i = 0; i < data.users.length; i++){
+			addUser(data.users[i]);
+		}
+		if(typeof(data.chats.length) !== 'undefined'){
+			for(var i = 0; i < data.chats.length; i++){
+				addChat(data.chats[i]);
+			}
+		}
 	});
 	/* socket.on('video-data', function(data){
 		//socket.emit('video-data', data);
@@ -296,7 +269,7 @@ function io_connect(){
 	socket.emit('user-connect', {"user":user});
 	socket.on('user-connect', function(data){
 		if(data.user != user){
-			users.push(data.user);
+			addUser(data.user);
 		}
 	});
 	socket.on('video-data', displayVideo);
@@ -304,10 +277,15 @@ function io_connect(){
 }
 
 function addChat(data){
-	while(data){
-		var d = data.pop();
-		$('#chatbox').append("<span class='chat-item'>"+d.text+"\n<br/>\n<span class='flex'><p>"+d.user+"</p><p>"+d.time+"</p></span></span>");
-	}
+	//console.log(new Date().getTime());
+	if($('#chatBox').html() == "Box for all the chats"){$('#chatBox').html("");}
+	$('#chatBox').prepend("<br/><span class='chat-item'>"+data.data+"\n<br/>\n<span class='flex-equal'><p>"+data.user+"</p><p>"+data.time+"</p></span></span>");
+}
+
+function addUser(usr){
+	users.push(user);
+	if($('#attendeeList').text() == "List of the attendees"){$('#attendeeList').text("");$('#attendeeList').append("<p>"+user+"</p>");}
+	$('#attendeeList').append("<p>"+usr+"</p>");
 }
 
 function displayVideo(data){
@@ -437,4 +415,45 @@ function roughSizeOfObject( object ) {
         }
     }
     return bytes;
+}
+
+//For custom websockets
+function connect() {
+	ws = new WebSocket("ws://localhost:1337");
+    ws.onopen = function () {
+        console.log("About to send data");
+        ws.send({'event':'user-connect', 'data':name}); // I WANT TO SEND THIS MESSAGE TO THE SERVER!!!!!!!!
+        console.log("Message sent!");
+    };
+
+	parseMessage();
+	
+    ws.onclose = function () {
+        // websocket is closed.
+        console.log("Connection is closed...");
+    };
+};
+
+function parseMessage(){
+	ws.onmessage = function (evt) {
+        var rc_data = evt.data;
+		switch(rc_data.event){
+			case 'wb-data':
+				boardData.push(rc_data.data);
+				break;
+			case 'chat-data':
+				addChat(rc_data.data);
+				break;
+			case 'video-data':
+				displayVideo(rc_data.data);
+				break;
+			case 'user-connect':
+				//User connected
+				break;
+			case 'user-disconnect':
+				//User disconnected
+				break;
+		}
+        console.log("Message received ");
+    };
 }

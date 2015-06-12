@@ -23,11 +23,10 @@ block content
 	//- <input type="file" accept="video/*;capture=microphone" />
 	#attendeeList List of the attendees
 	#chatZone
-		#chatBox 
-			|Box for all the chats
-		form#chat
-			input#chatInput(type='text' autocomplete='off')
-			input(type='button')
+		#chatBox Box for all the chats
+		#chat
+			textarea
+			input(type='button' value='Submit')
 	#footer
 	#cover
 		input#username(type="text" autocomplete='off')
