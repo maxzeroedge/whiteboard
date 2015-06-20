@@ -270,7 +270,7 @@ function io_connect(){
 		}
 	});
 	//Change technique here
-	//socket.on('video-data', displayVideo);
+	socket.on('video-data', displayVideo);
 	socket.on('chat-data', addChat);
 }
 
@@ -354,7 +354,7 @@ function initiateVideo(){
 			if(video_on){
 				var data = cnvs.toDataURL('image/jpeg', 0.8);
 				//Change the technique here
-				//socket.emit('video-data', {"user":user,"data":data});		
+				socket.emit('video-data', {"user":user,"data":data});		
 			}
 		}, 40);
 	}
