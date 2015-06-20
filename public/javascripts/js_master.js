@@ -230,7 +230,8 @@ $(document).ready(function(){
 function io_connect(){
 	var getUrl = window.location;
 	var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-	socket = io(baseUrl.substr(0, baseUrl.length - 1)); //('http://localhost:1337');
+	var baseUrl = (baseUrl.substr(baseUrl.length-1, baseUrl.length) == "/") ? baseUrl.substr(0, baseUrl.length - 1) : baseUrl;
+	socket = io(); //('http://localhost:1337');
 	socket.on('connect', function(data){
 		console.log('Socket connected');
 		//Check if user exists
