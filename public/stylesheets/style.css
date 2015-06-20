@@ -93,6 +93,12 @@ canvas#videoOthers
 	width: 100%;
 }
 
+.active-user
+{
+	background-color: #000;
+	color: #FFF;
+}
+
 #chatZone
 {
 	position:relative;

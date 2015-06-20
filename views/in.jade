@@ -1,0 +1,43 @@
+doctype html
+html
+	head
+		title BlackBoard
+		meta(charset="utf-8")
+		meta(name='viewport',content='width=device-width')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body(onLoad='javascript:initPaintApp();')
+		#header
+			#boardControlsTop Top Board Controls
+			#attendeeControls Attendee Controls
+				#next >>
+				#prev <<
+				#stopVid X
+		canvas#whiteBoard
+			| Main WhiteBoard
+		#boardControlsLeft
+			label(for='lineThickness')
+			input#lineThickness(type='text',name='lineThickness',value='1')
+			label(for='eraser')
+			input#eraserThickness(type='text',name="eraserThickness",value='5')
+			input#undoJob(type='button',name='undoJob')
+		#videoBox
+			video(autoplay)
+			canvas#videoSelf
+			canvas#videoOthers
+		//- <input type="file" accept="video/*;capture=camcorder" />
+		//- <input type="file" accept="video/*;capture=microphone" />
+		#attendeeList List of the attendees
+		#chatZone
+			#chatBox Box for all the chats
+			#chat
+				textarea
+				input(type='button' value='Submit')
+		#footer
+		#cover
+			input#username(type="text" autocomplete='off')
+			input(type="button" value="ok")
+		script(src='/javascripts/socket.io.js')
+		//- script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+		script(src='/javascripts/jquery.min.js')
+		script(src='/javascripts/js_master.js')
+		script(src='/javascripts/sizeof.compressed.js')

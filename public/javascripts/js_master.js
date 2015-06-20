@@ -49,12 +49,8 @@ function initPaintApp(){
 		}
 	};
 	document.getElementById("lineThickness").onchange = function(){
-		if(mode!=="write"){
-			// changeProp("mode",mode);
-			changeProp("mode","write");
-		}
-		// changeProp("lineThickness", lineThickness); 
 		changeProp("lineThickness", document.getElementById("lineThickness").value); 
+		changeProp("mode","write");
 	}
 	document.getElementById("eraserThickness").onclick = function(){
 		if(mode!=="erase"){
@@ -63,13 +59,10 @@ function initPaintApp(){
 		}
 	};
 	document.getElementById("eraserThickness").onchange = function(){
-		if(mode!=="erase"){
-			// changeProp("mode",mode);
-			changeProp("mode","erase");
-		}
 		changeProp("eraserThickness", document.getElementById("eraserThickness").value);
+		changeProp("mode","erase");
 	}
-	document.getElementById("undoJob").onclick = function(e){undoAction(e);};
+	document.getElementById("undoJob").onclick = function(){undoAction(5);}
 }
 
 function setDefaults(){
@@ -160,12 +153,9 @@ function addPropToDataSource(args){
 	boardData.push(obj);
 }
 
-function undoAction(e){
-	boardData.pop();
-	boardData.pop();
-	boardData.pop();
-	boardData.pop();
-	reRender(e);
+function undoAction(num){
+	for(var i = 0; i < num; i++){console.log(boardData.pop());}
+	reRender();
 }
 
 function reRender(){
@@ -176,16 +166,16 @@ function reRender(){
 	ctx.fillStyle = background;
 	ctx.fillRect(0,0,cnvs.width,cnvs.height);
 	for(var i = 0; i < boardData.length; i++){
-		var temp = boardData.slice(i, i+1);
+		var temp = boardData.slice(i, boardData.length - 2);
 		for(var el in temp[0]){
-			if(temp[0][el]["startX"] !== "undefined" && mode==="write"){
-				reDraw(ctx, temp[0][el]["startX"], temp[0][el]["startY"], temp[0][el]["endX"], temp[0][el]["endY"], lineColor, lineThickness);
+			if(temp[0][el].startX !== "undefined" && mode==="write"){
+				reDraw(ctx, temp[0][el].startX, temp[0][el].startY, temp[0][el].endX, temp[0][el].endY, lineColor, lineThickness);
 			}
-			else if(temp[0][el]["startX"] !== "undefined" && mode==="eraser"){
-				reDraw(ctx, temp[0][el]["startX"], temp[0][el]["startY"], temp[0][el]["endX"], temp[0][el]["endY"], background, eraserThickness);
+			else if(temp[0][el].startX !== "undefined" && mode==="eraser"){
+				reDraw(ctx, temp[0][el].startX, temp[0][el].startY, temp[0][el].endX, temp[0][el].endY, background, eraserThickness);
 			}
-			else{
-				window[temp[0][el]["property"]] = temp[0][el]["value"];
+			else if(temp[0][el].property !== "undefined"){
+				window[temp[0][el].property] = temp[0][el].value;
 				console.log(lineThickness+lineColor);
 			}
 		}
@@ -209,14 +199,6 @@ function hasGetUserMedia(){
 $(document).ready(function(){
 	//var socket = io();
 	//$('#chat').submit();
-	$("#cover input[type='button']").on("click", function(){
-		if($("#username").val() == ""){
-		}
-		else{
-			user = $("#username").val();
-			$('#cover').css({"display":"none"});
-		}
-	});
 	io_connect();
 	initiateVideo();
 	$('#next').on('click', function(){
@@ -246,10 +228,30 @@ $(document).ready(function(){
 });
 
 function io_connect(){
-	socket = io('https://wbmze.herokuapp.com:5000');
-	socket.on('connection', function(data){
-		//Something
+	var getUrl = window.location;
+	var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+	socket = io(baseUrl.substr(0, baseUrl.length - 1)); //('http://localhost:1337');
+	socket.on('connect', function(data){
+		console.log('Socket connected');
+		//Check if user exists
+		$("#cover input[type='button']").on("click", function(){
+			if($("#username").val() == ""){
+			}
+			else{
+				if(inArray(users, $("#username").val())){
+					alert('User already exists. Try something new.'); 
+					$("#username").val("");
+				}
+				else{
+					user = $("#username").val();
+					socket.emit('user-connect', {"user":user});
+					addUser(user);
+					$('#cover').css({"display":"none"});
+				}
+			}
+		});
 	});
+	
 	//Populate User List
 	socket.on('init-load', function(data){
 		for(var i = 0; i < data.users.length; i++){
@@ -261,18 +263,13 @@ function io_connect(){
 			}
 		}
 	});
-	/* socket.on('video-data', function(data){
-		//socket.emit('video-data', data);
-		//console.log(data);
-		displayVideo(data);
-	}); */
-	socket.emit('user-connect', {"user":user});
 	socket.on('user-connect', function(data){
 		if(data.user != user){
 			addUser(data.user);
 		}
 	});
-	socket.on('video-data', displayVideo);
+	//Change technique here
+	//socket.on('video-data', displayVideo);
 	socket.on('chat-data', addChat);
 }
 
@@ -283,9 +280,14 @@ function addChat(data){
 }
 
 function addUser(usr){
-	users.push(user);
-	if($('#attendeeList').text() == "List of the attendees"){$('#attendeeList').text("");$('#attendeeList').append("<p>"+user+"</p>");}
-	$('#attendeeList').append("<p>"+usr+"</p>");
+	if($('#attendeeList').text() == "List of the attendees"){$('#attendeeList').text("");}
+	if(inArray(users, usr) || usr == user){
+		$('#attendeeList').prepend("<p class='active-user'>"+usr+"</p>");
+	}
+	else{
+		users.push(usr);
+		$('#attendeeList').append("<p>"+usr+"</p>");
+	}
 }
 
 function displayVideo(data){
@@ -345,16 +347,13 @@ function initiateVideo(){
 				//Send stream to server
 			}; */
 		}, errorCallback);
-		var timer = setInterval(function(){
+		setInterval(function(){
 			ctx.drawImage(video, 0, 0, cnvs.width, cnvs.height);
 			document.getElementsByTagName('video')[0].style.display="none";
 			if(video_on){
 				var data = cnvs.toDataURL('image/jpeg', 0.8);
-				//socket.emit('video-data', {"user":user,"data":dataURIToBlob(data)});
-				//socket.emit('user-connect', {"name":user});
-				//console.log(roughSizeOfObject(data)/1024);
-				//console.log(sizeof(data)/1024); //Using sizeof.js
-				socket.emit('video-data', {"user":user,"data":data});		
+				//Change the technique here
+				//socket.emit('video-data', {"user":user,"data":data});		
 			}
 		}, 40);
 	}
@@ -417,43 +416,10 @@ function roughSizeOfObject( object ) {
     return bytes;
 }
 
-//For custom websockets
-function connect() {
-	ws = new WebSocket("ws://localhost:1337");
-    ws.onopen = function () {
-        console.log("About to send data");
-        ws.send({'event':'user-connect', 'data':name}); // I WANT TO SEND THIS MESSAGE TO THE SERVER!!!!!!!!
-        console.log("Message sent!");
-    };
-
-	parseMessage();
-	
-    ws.onclose = function () {
-        // websocket is closed.
-        console.log("Connection is closed...");
-    };
-};
-
-function parseMessage(){
-	ws.onmessage = function (evt) {
-        var rc_data = evt.data;
-		switch(rc_data.event){
-			case 'wb-data':
-				boardData.push(rc_data.data);
-				break;
-			case 'chat-data':
-				addChat(rc_data.data);
-				break;
-			case 'video-data':
-				displayVideo(rc_data.data);
-				break;
-			case 'user-connect':
-				//User connected
-				break;
-			case 'user-disconnect':
-				//User disconnected
-				break;
-		}
-        console.log("Message received ");
-    };
+function inArray(arr, val){
+	for(var i = 0; i < arr.length; i++)
+	{
+		if(arr[i]==val){return true;}
+		else{continue;}
+	}				
 }
