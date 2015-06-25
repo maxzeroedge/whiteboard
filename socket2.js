@@ -20,7 +20,7 @@ function socket_server_start(server){
 			socket.broadcast.emit('user-disconnect', data);	
 		});
 		socket.on('wb-data', function(data){
-			socket.emit('wb-data', data);
+			socket.broadcast.emit('wb-data', data);
 		});
 		socket.on('chat-data', function(data){
 			chats.push(data);

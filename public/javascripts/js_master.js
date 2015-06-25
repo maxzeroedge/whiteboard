@@ -143,6 +143,14 @@ function addMovtToDataSource(args){
 	var stamp = new Date().getTime();
 	var obj = {};
 	obj[stamp] = {"user":user, "startX":args[0], "startY":args[1], "endX":args[2], "endY":args[3]};
+	socket.emit('wb-data', {
+		"user":user, 
+		"startX":args[0], 
+		"startY":args[1], 
+		"endX":args[2], 
+		"endY":args[3], 
+		"time":stamp
+	});
 	boardData.push(obj);
 }
 
@@ -150,6 +158,12 @@ function addPropToDataSource(args){
 	var stamp = new Date().getTime();
 	var obj = {};
 	obj[stamp] = {"user":user, "property":args[0], "value":args[1]};
+	socket.emit('wb-data', {
+		"user":user, 
+		"property":args[0], 
+		"value":args[1],
+		"time":stamp
+	});
 	boardData.push(obj);
 }
 
@@ -270,8 +284,19 @@ function io_connect(){
 		}
 	});
 	//Change technique here
+	socket.on('wb-data', updateBoard);
 	socket.on('video-data', displayVideo);
 	socket.on('chat-data', addChat);
+}
+
+function updateBoard(data){
+	var ctx = document.getElementById("whiteBoard").getContext('2d');
+	if(data.property == undefined){
+		reDraw(ctx, data.startX, data.startY, data.endX, data.endY);
+	}
+	else{
+		window[data.property] = data.value;
+	}
 }
 
 function addChat(data){
@@ -292,8 +317,8 @@ function addUser(usr){
 }
 
 function displayVideo(data){
-	/* console.log(new Date().getTime() - time);
-	time = new Date().getTime(); */
+	console.log(new Date().getTime() - time);
+	time = new Date().getTime();
 	if(data.user != user){
 		var url = window.URL.createObjectURL(dataURIToBlob(data.data.toString()));
 		var img = new Image();
