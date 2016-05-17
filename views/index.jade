@@ -16,7 +16,8 @@ block content
 		input#eraserThickness(type='text',name="eraserThickness",value='5')
 		input#undoJob(type='button',name='undoJob')
 	#videoBox
-		video(autoplay)
+		video#selfVid(autoplay)
+		video#otherVid(autoplay)
 		canvas#videoSelf
 		canvas#videoOthers
 	//- <input type="file" accept="video/*;capture=camcorder" />

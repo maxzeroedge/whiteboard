@@ -1,4 +1,4 @@
 @echo off
-node D:\Shu\Node\whiteboard\bin\www
+node .\bin\www
 pause
 exit

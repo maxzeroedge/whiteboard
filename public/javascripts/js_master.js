@@ -364,7 +364,7 @@ function initiateVideo(){
 	        }
 	    }, audio: false
 	};//Set audio to true
-	//console.log(boardConstraints);
+
 	if(navigator.getUserMedia){
 		var video = document.querySelector('video');
 	    navigator.getUserMedia(boardConstraints, function (stream) {
